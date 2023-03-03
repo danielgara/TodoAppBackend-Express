@@ -12,6 +12,20 @@ export default class TodoController {
     res.json({ "list": openTodos });
   }
 
+  public static async listSortedClosed(req: Request, res: Response) {
+    const closedTodos = await Todo.findAll({
+      where: { 'state': 'CLOSED' },  order: [['message', req.params.direction]]
+    });
+    res.json({ "list": closedTodos });
+  }
+
+  public static async listSortedOpen(req: Request, res: Response) {
+    const openTodos = await Todo.findAll({ 
+      where: { 'state': 'OPEN' },  order: [['message', req.params.direction]]
+    });
+    res.json({ "list": openTodos });
+  }
+
   public static async create(req: Request, res: Response) {
     await Todo.create({
       message: req.body.message,

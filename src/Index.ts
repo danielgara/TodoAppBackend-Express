@@ -35,6 +35,8 @@ class Index {
     Index.app.get('/todos/closed', TodoController.listClosed);
     Index.app.get('/todos/delete/:id', TodoController.delete);
     Index.app.get('/todos/update/:id/:state', TodoController.update);
+    Index.app.get('/todos/open/:direction', TodoController.listSortedOpen);
+    Index.app.get('/todos/closed/:direction', TodoController.listSortedClosed);
   } 
 
   public static startServer(){
