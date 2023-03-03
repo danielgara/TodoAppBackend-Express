@@ -15,7 +15,7 @@ export default class TodoController {
   public static async create(req: Request, res: Response) {
     await Todo.create({
       message: req.body.message,
-      state: "OPEN"
+      state: "OPEN",
     });
     res.json({ "res": "Todo created successfully" });
   }

@@ -18,7 +18,7 @@ export default class DBConfig {
   }
 
   public static async syncDB(){
-    await DBConfig.sequelize.sync();
+    await DBConfig.sequelize.sync({ alter: true });
     console.log("All models were synchronized successfully.");
   }
 }
