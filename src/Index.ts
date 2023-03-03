@@ -4,6 +4,7 @@ import cors from "cors";
 import bodyParser from "body-Parser";
 import TodoController from './controllers/TodoController';
 import DBConfig from './db/DBConfig';
+import fileUpload from "express-fileupload";
 
 class Index {
   public static app: Express;
@@ -14,6 +15,8 @@ class Index {
     Index.app.use(cors({origin: '*'}));
     Index.app.use(bodyParser.urlencoded({ extended: true }));
     Index.app.use(bodyParser.json());
+    Index.app.use(fileUpload({ createParentPath: true }));
+    Index.app.use(express.static("public"));
     await Index.startDB();
     Index.configRoutes();
     Index.startServer();

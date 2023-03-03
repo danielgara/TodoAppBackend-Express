@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Todo from '../models/Todo';
+import * as fs from 'fs';
 
 export default class TodoController {
   public static async listClosed(req: Request, res: Response) {
@@ -27,15 +28,33 @@ export default class TodoController {
   }
 
   public static async create(req: Request, res: Response) {
+    let imageName = '';
+    if (req.files && req.files.image){
+      const image = req.files.image as any;
+      imageName = `${Date.now()}_${image.name}`;
+      const path = __dirname + "../../../public/images/" + imageName;
+      image.mv(path);
+    }
+
     await Todo.create({
       message: req.body.message,
       state: "OPEN",
+      image: imageName,
     });
     res.json({ "res": "Todo created successfully" });
   }
 
   public static async delete(req: Request, res: Response) {
     const id = req.params.id;
+    const todoToDelete = await Todo.findByPk(id) as any;
+    if(todoToDelete && todoToDelete.image){
+      try {
+        const path = __dirname + "../../../public/images/" + todoToDelete.image;
+        fs.unlinkSync(path);
+      } catch (err) {
+        console.error(err);
+      }
+    }
     await Todo.destroy({ where: { id: id } });
     res.json({ "res": "Todo deleted successfully" });
   }

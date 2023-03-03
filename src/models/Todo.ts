@@ -10,6 +10,10 @@ export default class Todo extends Model {
       },
       message: DataTypes.STRING,
       state: DataTypes.STRING,
+      image: {
+        type: DataTypes.STRING,
+        defaultValue: ''
+      }
     }, {
       sequelize,
       modelName: 'Todo'
